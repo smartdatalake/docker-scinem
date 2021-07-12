@@ -57,8 +57,8 @@ Prepare the sample data:
 ```
 mkdir sample_data
 cd sample_data
-wget sample_data
-unzip sample_data 
+wget http://scinem.imsi.athenarc.gr/content/DBLP_sample.zip
+unzip DBLP_sample.zip 
 ```
 
 Modify the ```docker-compose.yaml``` volume configurations according to the local setup. In order to test out with the sample data provided by Athena, the pre-configured local structure may be applied. Generally, the configuration can stay as is. 
@@ -79,7 +79,7 @@ Now the SciNeM UI is available on <host/IP>:8181
 If everything is running, then the sample data needs to be loaded into HDFS:
 ```
 docker exec -it SDL_app /bin/bash
-hadoop fs -fs hdfs://namenode:9000 -ls
+hadoop fs -fs hdfs://namenode:9000 -put /data /
 
 ```
 
