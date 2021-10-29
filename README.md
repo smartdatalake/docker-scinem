@@ -26,7 +26,12 @@ cd spark
 ./build.sh
 ```
 
-Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), and apply the following changes, which are needed to ensure that the various hosts are changed to their dockerized equivalents:
+Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), make sure to run 
+``` 
+git submodule update --recursive --remote 
+```
+
+to actually update submodules and then apply the following changes, which are needed to ensure that the various hosts are changed to their dockerized equivalents:
 
 
 ```
@@ -40,7 +45,7 @@ and follow the original build instructions, followed by:
 
 ```
 cd <path-to-repo>
-docker build -t smartdatalake/my_app  # Or whatever name you prefer, just replace it in the docker-compose file as well. 
+docker build -t smartdatalake/scinem_app . # Or whatever name you prefer, just replace it in the docker-compose file as well. 
 ```
 
 The second build command installs the Python dependences as well as adding the Hadoop and Spark binaries. 
@@ -50,6 +55,8 @@ Link or copy SciNeM-workflows to ```./libs/SciNeM-workflows``` (or point the ```
 ```
 ln -s ../SciNeM/libs ./libs
 ```
+
+Make sure to adjust the memory and core commands accordingly to what the host is providing (check in Spark UI on port 8080)
 
 Prepare the sample data:
  
@@ -78,7 +85,7 @@ Now the SciNeM UI is available on <host/IP>:8181
 
 If everything is running, then the sample data needs to be loaded into HDFS:
 ```
-docker exec -it SDL_app /bin/bash
+docker exec -it SDL_scinem_app /bin/bash
 hadoop fs -fs hdfs://namenode:9000 -put /data /
 
 ```

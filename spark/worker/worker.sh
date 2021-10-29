@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export SPARK_HOME=/spark
+export SPARK_WORKER_HOST=spark-worker
 
 . "/spark/sbin/spark-config.sh"
 
