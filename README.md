@@ -37,6 +37,7 @@ cd ../..
 Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), make sure to run (we assume that SciNeM is in the parent directory, relative to this repository)
 
 ``` 
+git clone --recursive https://github.com/schatzopoulos/SciNeM.git
 git submodule update --recursive --remote
 ```
 
@@ -95,15 +96,20 @@ docker exec -it SDL_scinem_app /bin/bash hadoop fs -fs hdfs://namenode:9000 -mkd
 docker exec -it SDL_scinem_app /bin/bash hadoop fs -fs hdfs://namenode:9000 -put /data/SciNeM/SciNeM-data /data/SciNeM/
 ```
 
+### (Working) Sample Query ###
+```
+Author - Paper - Author, filtered for Paper.year > 2000
+```
 
 ## Open Points ## 
 - Streamline the dockerization of SciNem 
 - Host the pre-built images in a repository
+- Evaluate if the different Docker images may be further harmonized
 
 ## Notes ## 
 - analysis.sh has been modified to reflect the dockerized Spark host as well as reduced the memory requirements of the worker to fit with the defaults
 - Constants.java has been modified to reflect the dockerized hostnames. 
-- Evaluate if the different Docker images may be further harmonized
+
 
 ## Debugging ##
 In case the UI fails, a given query can be debugged using:
