@@ -24,42 +24,50 @@ Build a SciNeM enabled Spark deployment which installs the relevant Python depen
 ```
 cd spark
 ./build.sh
+cd ..
 ```
 
-Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), make sure to run 
+Prepare a Hadoop/Spark enabled image for the SciNeM environment:
+```
+cd sdl-docker-base
+docker build -t smartdatalake/docker-base  .
+cd ../..
+```
+
+Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), make sure to run (we assume that SciNeM is in the parent directory, relative to this repository)
+
 ``` 
-git submodule update --recursive --remote 
+git submodule update --recursive --remote
 ```
 
-to actually update submodules and then apply the following changes, which are needed to ensure that the various hosts are changed to their dockerized equivalents:
-
+The default configuration needs a few alternation, in order to work inside of the docker environment, copy the files from here, or adjust manually throughout:
 
 ```
 cd <this-repo>
-cp scinem/Constants.java <path-to-scinem-repo>/src/main/java/athenarc/imsi/sdl/config/Constants.java
-cp scinem/Dockerfile <path-to-scinem-repo>/Dockerfile
-cp scinem/anaylsis.sh <path-to-scinem-repo>/libs/SciNeM-workflows/analysis/analysis.sh
+cp scinem/Constants.java ../SciNeM/src/main/java/athenarc/imsi/sdl/config/Constants.java  # To spcify the data locations
+cp scinem/pom.xml ../SciNeM/ # To use the above created image as a base Docker image
 ```
 
-and follow the original build instructions, followed by:
-
+Build a dockerized image of SciNem:
 ```
-cd <path-to-repo>
-docker build -t smartdatalake/scinem_app . # Or whatever name you prefer, just replace it in the docker-compose file as well. 
+./mvnw -Pprod verify jib:dockerBuild
 ```
 
-The second build command installs the Python dependences as well as adding the Hadoop and Spark binaries. 
+Checkout (ideally, for now), link or copy SciNeM-workflows to ```./libs/SciNeM-workflows``` (or point the ```docker-compose.yaml``` to the appropriate location.)
 
-Link or copy SciNeM-workflows to ```./libs/SciNeM-workflows``` (or point the ```docker-compose.yaml``` to the appropriate location.)
+```
+git clone https://github.com/schatzopoulos/SciNeM-workflows ./libs/SciNeM-workflows
+```
+
+or 
 
 ```
 ln -s ../SciNeM/libs ./libs
 ```
 
-Make sure to adjust the memory and core commands accordingly to what the host is providing (check in Spark UI on port 8080)
+**Make sure to adjust the memory and core commands accordingly to what the host is providing (check in Spark UI on port 8080) later on when Spark is running**
 
 Prepare the sample data:
- 
 
 ```
 mkdir sample_data
@@ -70,24 +78,20 @@ unzip DBLP_sample.zip
 
 Modify the ```docker-compose.yaml``` volume configurations according to the local setup. In order to test out with the sample data provided by Athena, the pre-configured local structure may be applied. Generally, the configuration can stay as is. 
 
-
-
 Finally, start the full stack with
 
 ```
 cd <this-repo>
-docker-compose up 
+docker-compose up
 ```
-
 
 
 Now the SciNeM UI is available on <host/IP>:8181
 
 If everything is running, then the sample data needs to be loaded into HDFS:
 ```
-docker exec -it SDL_scinem_app /bin/bash
-hadoop fs -fs hdfs://namenode:9000 -put /data /
-
+docker exec -it SDL_scinem_app /bin/bash hadoop fs -fs hdfs://namenode:9000 -mkdir -p /data/SciNeM/SciNeM-data
+docker exec -it SDL_scinem_app /bin/bash hadoop fs -fs hdfs://namenode:9000 -put /data/SciNeM/SciNeM-data /data/SciNeM/
 ```
 
 
@@ -98,12 +102,12 @@ hadoop fs -fs hdfs://namenode:9000 -put /data /
 ## Notes ## 
 - analysis.sh has been modified to reflect the dockerized Spark host as well as reduced the memory requirements of the worker to fit with the defaults
 - Constants.java has been modified to reflect the dockerized hostnames. 
-
+- Evaluate if the different Docker images may be further harmonized
 
 ## Debugging ##
 In case the UI fails, a given query can be debugged using:
 ```
 docker exec -it SDL_app /bin/bash
- bash /data/SciNeM/SciNeM-workflows/analysis/analysis.sh /data/SciNeM/SciNeM-results/<query hash>/config.json 
+bash /data/SciNeM/SciNeM-workflows/analysis/analysis.sh /data/SciNeM/SciNeM-results/<query hash>/config.json 
 
 ```
