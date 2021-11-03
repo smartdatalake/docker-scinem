@@ -46,6 +46,7 @@ The default configuration needs a few alternation, in order to work inside of th
 cd <this-repo>
 cp scinem/Constants.java ../SciNeM/src/main/java/athenarc/imsi/sdl/config/Constants.java  # To spcify the data locations
 cp scinem/pom.xml ../SciNeM/ # To use the above created image as a base Docker image
+cp scinem/.dockerignore ../SciNeM/ # Optional, but reduces the context slightly. 
 ```
 
 Build a dockerized image of SciNem:
