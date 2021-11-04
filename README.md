@@ -34,11 +34,11 @@ cd spark
 cd ..
 ```
 
-
-Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), make sure to run (we assume that SciNeM is in the parent directory, relative to this repository)
+Make sure to run (we assume that SciNeM is in the parent directory, relative to this repository):
 
 ``` 
 git clone --recursive https://github.com/schatzopoulos/SciNeM.git
+cd ./SciNeM/
 git submodule update --recursive --remote
 ```
 
@@ -53,22 +53,14 @@ cp scinem/.dockerignore ../SciNeM/ # Optional, but reduces the context slightly.
 
 Build a dockerized image of SciNem:
 ```
-./mvnw -Pprod verify jib:dockerBuild
+cd ../SciNeM
+./mvnw -Dmaven.test.skip -Pprod verify jib:dockerBuild
 ```
+Optionally, specify an custom temp folder with the `-Djava.io.tmpdir=` flag, using an absolute folder in the command above.
 
-Checkout (ideally, for now), link or copy SciNeM-workflows to ```./libs/SciNeM-workflows``` (or point the ```docker-compose.yaml``` to the appropriate location.)
+Point the ```docker-compose.yaml``` to the appropriate location for SciNeM-workflows.
 
-```
-git clone https://github.com/schatzopoulos/SciNeM-workflows ./libs/SciNeM-workflows
-```
-
-or 
-
-```
-ln -s ../SciNeM/libs ./libs
-```
-
-**Make sure to adjust the memory and core commands accordingly to what the host is providing (check in Spark UI on port 8080) later on when Spark is running**
+**Make sure to adjust the memory and core commands (by editing the ../SciNeM/libs/SciNeM-workflows/analysis/analysis.sh script) the accordingly to what the host is providing (check in Spark UI on port 8080) later on when Spark is running**
 
 Prepare the sample data:
 
@@ -79,6 +71,10 @@ wget http://scinem.imsi.athenarc.gr/content/DBLP_sample.zip
 unzip DBLP_sample.zip 
 ```
 
+Create a folder to store the results:
+```
+mkdir results
+```
 Modify the ```docker-compose.yaml``` volume configurations according to the local setup. In order to test out with the sample data provided by Athena, the pre-configured local structure may be applied. Generally, the configuration can stay as is. 
 
 Finally, start the full stack with
