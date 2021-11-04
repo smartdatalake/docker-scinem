@@ -1,4 +1,5 @@
 FROM smartdatalake/spark-base:3.1.2-hadoop3.2
+# FROM smartdatalake/docker-base
 
 LABEL maintainer="Gezim Sejdiu <g.sejdiu@gmail.com>, Giannis Mouchakis <gmouchakis@gmail.com>"
 

@@ -11,7 +11,7 @@ build() {
 
     cd $([ -z "$2" ] && echo "./$NAME" || echo "$2")
     echo '--------------------------' building $IMAGE in $(pwd)
-    docker build -t $IMAGE .
+    docker build   --no-cache  -t $IMAGE .
     cd -
 }
 

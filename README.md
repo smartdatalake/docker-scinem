@@ -19,6 +19,13 @@ Get this repository
 git clone https://github.com/smartdatalake/docker-scinem
 ```
 
+Prepare a Hadoop/Spark enabled image for the SciNeM environment:
+```
+cd sdl-docker-base
+docker build -t smartdatalake/docker-base  .
+cd ../..
+```
+
 Build a SciNeM enabled Spark deployment which installs the relevant Python dependencies into the container: 
 
 ```
@@ -27,12 +34,6 @@ cd spark
 cd ..
 ```
 
-Prepare a Hadoop/Spark enabled image for the SciNeM environment:
-```
-cd sdl-docker-base
-docker build -t smartdatalake/docker-base  .
-cd ../..
-```
 
 Checkout the official SciNeM repository (see instructions here https://github.com/schatzopoulos/SciNeM), make sure to run (we assume that SciNeM is in the parent directory, relative to this repository)
 
@@ -104,7 +105,7 @@ Author - Paper - Author, filtered for Paper.year > 2000
 ## Open Points ## 
 - Streamline the dockerization of SciNem 
 - Host the pre-built images in a repository
-- Evaluate if the different Docker images may be further harmonized
+- Evaluate if the different Docker images may be further harmonized. Eventually, create one or a few slim versions.
 
 ## Notes ## 
 - analysis.sh has been modified to reflect the dockerized Spark host as well as reduced the memory requirements of the worker to fit with the defaults
@@ -114,7 +115,7 @@ Author - Paper - Author, filtered for Paper.year > 2000
 ## Debugging ##
 In case the UI fails, a given query can be debugged using:
 ```
-docker exec -it SDL_app /bin/bash
+docker exec -it SDL_scinem_app /bin/bash
 bash /data/SciNeM/SciNeM-workflows/analysis/analysis.sh /data/SciNeM/SciNeM-results/<query hash>/config.json 
 
 ```
