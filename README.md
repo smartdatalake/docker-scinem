@@ -23,7 +23,7 @@ Prepare a Hadoop/Spark enabled image for the SciNeM environment:
 ```
 cd sdl-docker-base
 docker build -t smartdatalake/docker-base  .
-cd ../..
+cd ../
 ```
 
 Build a SciNeM enabled Spark deployment which installs the relevant Python dependencies into the container: 
