@@ -60,7 +60,7 @@ Optionally, specify an custom temp folder with the `-Djava.io.tmpdir=` flag, usi
 
 Point the ```docker-compose.yaml``` to the appropriate location for SciNeM-workflows.
 
-**Make sure to adjust the memory and core commands (by editing the ../SciNeM/libs/SciNeM-workflows/analysis/analysis.sh script) the accordingly to what the host is providing (check in Spark UI on port 8080) later on when Spark is running**
+**Make sure to adjust the memory and core commands (by editing the docker-compose.yaml under 'spot-app') accordingly to what the host is providing (check in Spark UI on port 8080) later on when Spark is running**
 
 Prepare the sample data:
 
