@@ -62,7 +62,6 @@ services:
   
 
   spot-app:
-    # image: smartdatalake/scinem_app
     image: spot
     container_name: SDL_scinem_app
     environment:
@@ -73,13 +72,18 @@ services:
       - SPRING_DATA_MONGODB_DATABASE=SpOT
       - JHIPSTER_SLEEP=31 # gives time for other services to boot before the application
       - spark_master=spark-master:7077
+      - executor_cores=8
+      - total_executor_cores=60
+      - executor_memory=25G
+      - num_executors=8
+      - driver_memory=50GB
+      - shuffle_partitions=128
     ports:
       - 8181:8181
     volumes:
       - ./sample_data:/data/SciNeM/SciNeM-data
       - ./results:/data/SciNeM/SciNeM-results
-      # - ./libs/SciNeM-workflows:/data/SciNeM/SciNeM-workflows
-      - ./pure:/data/SciNeM/SciNeM-workflows
+      - ../SciNeM/libs/SciNeM-workflows:/data/SciNeM/SciNeM-workflows
 
 
   spot-mongodb:
