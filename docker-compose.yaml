@@ -76,7 +76,7 @@ services:
       - total_executor_cores=60
       - executor_memory=25G
       - num_executors=8
-      - driver_memory=50GB
+      - driver_memory=50G
       - shuffle_partitions=128
     ports:
       - 8181:8181
