@@ -72,6 +72,12 @@ services:
       - SPRING_DATA_MONGODB_DATABASE=SpOT
       - JHIPSTER_SLEEP=31 # gives time for other services to boot before the application
       - spark_master=spark-master:7077
+      - executor_cores=8
+      - total_executor_cores=60
+      - executor_memory=25G
+      - num_executors=8
+      - driver_memory=50GB
+      - shuffle_partitions=128
     ports:
       - 8181:8181
     volumes:
