@@ -16,7 +16,6 @@ services:
     env_file:
       - ./hadoop/hadoop.env
 
-
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: SDL_datanode
@@ -28,7 +27,6 @@ services:
     env_file:
       - ./hadoop/hadoop.env
 
-  
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
     container_name: SDL_resourcemanager
@@ -38,7 +36,6 @@ services:
     env_file:
       - ./hadoop/hadoop.env
 
-
   nodemanager1:
     image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
     container_name: SDL_nodemanager
@@ -47,7 +44,6 @@ services:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
     env_file:
       - ./hadoop/hadoop.env
-
 
   historyserver:
     image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
@@ -59,7 +55,6 @@ services:
       - hadoop_historyserver:/hadoop/yarn/timeline
     env_file:
       - ./hadoop/hadoop.env
-  
 
   spot-app:
     image: spot
@@ -72,9 +67,9 @@ services:
       - SPRING_DATA_MONGODB_DATABASE=SpOT
       - JHIPSTER_SLEEP=31 # gives time for other services to boot before the application
       - spark_master=spark-master:7077
-      - executor_cores=8
+      - executor_cores=1
       - total_executor_cores=60
-      - executor_memory=25G
+      - executor_memory=1G
       - num_executors=8
       - driver_memory=50G
       - shuffle_partitions=128
@@ -85,13 +80,11 @@ services:
       - ./results:/data/SciNeM/SciNeM-results
       - ../SciNeM/libs/SciNeM-workflows:/data/SciNeM/SciNeM-workflows
 
-
   spot-mongodb:
     container_name: SDL_scinem_mongo
     image: mongo:4.0.13
     ports:
       - '27018:27017'
-
 
   spark-master:
     image: smartdatalake/spark-master:3.1.2-hadoop3.2
@@ -106,7 +99,6 @@ services:
       - INIT_DAEMON_STEP=setup_spark
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
 
-
   spark-worker:
     image: smartdatalake/spark-worker:3.1.2-hadoop3.2
     # container_name: SDL_spark-worker
@@ -117,7 +109,6 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
-
 
 volumes:
   hadoop_namenode:

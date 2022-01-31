@@ -2,7 +2,6 @@
 
 "Minimal" wrapper for setting up SciNeM using a single Docker stack deployment. 
 
-Work in progress
 
 # Getting started
 
@@ -11,7 +10,6 @@ In this readme, we brifely go through;
 - dockerizing the SciNeM application and adding the relevant Python dependencies
 - configuring the sample data
 - running the SciNeM stack
-
 
 
 Get this repository
